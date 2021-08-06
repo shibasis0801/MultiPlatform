@@ -9,6 +9,12 @@ module.exports = {
     resolve: {
         extensions: [ ".ts", ".tsx", ".js", ".json", "web.js", "web.jsx" ],
     },
+    externals: {
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+        'react-router': 'ReactRouter',
+        'react-router-dom': 'ReactRouterDOM'
+    },
     module: {
         rules: [
             {
