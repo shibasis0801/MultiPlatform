@@ -1,36 +1,26 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-// Use ReactNativePaper if needed
-// https://callstack.github.io/react-native-paper/getting-started.html
-const commonReact = path.resolve(__dirname, "../../react")
+
+
 const webReact = path.resolve(__dirname, "../src")
 
 module.exports = {
     entry: path.resolve(__dirname, "../src/index.tsx"),
     resolve: {
         extensions: [ ".ts", ".tsx", ".js", ".json", "web.js", "web.jsx" ],
-        alias: {
-            "react-native$": "react-native-web"
-        }
     },
     module: {
         rules: [
             {
                 test: /\.[jt]sx?/,
-                include: [
-                    commonReact,
-                    webReact
-                ],
+                include: [webReact],
                 use: {
                     loader: "babel-loader",
                     options: {
                         cacheDirectory: true,
                         presets: [
-                            'module:metro-react-native-babel-preset'
-                        ],
-                        plugins: [
-                            "react-native-web",
-                            ["@babel/plugin-proposal-decorators", { legacy: true }]
+                            "@babel/preset-react",
+                            "@babel/preset-typescript"
                         ]
                     }
                 }

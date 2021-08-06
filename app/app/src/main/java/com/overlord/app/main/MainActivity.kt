@@ -18,8 +18,6 @@ import com.phoenixoverlord.pravegaapp.mechanisms.helpers.buildCapture
 import com.phoenixoverlord.pravegaapp.mechanisms.helpers.buildPreview
 import com.phoenixoverlord.pravegaapp.ml.analysers.vision.LabellingAnalyser
 import dagger.hilt.android.AndroidEntryPoint
-import org.liquidplayer.javascript.JSContext
-import org.liquidplayer.javascript.JSFunction
 import javax.inject.Inject
 
 
@@ -64,31 +62,6 @@ class MainActivity : BaseActivity() {
         val capture = buildCapture()
         camera.start(preview, capture)
         findViewById<Button>(R.id.camera_capture_button).setOnClickListener { camera.savePicture() }
-
-        testDrive()
-    }
-
-    fun testDrive() {
-//        val webView = WebView(this)
-//        webView.settings.javaScriptEnabled = true
-//        webView.evaluateJavascript("function(){ return 'Running Pravega' }();") {
-//            logDebug("Shibasis Patnaik webview $it")
-//        }
-        val JavaScript = JSContext()
-
-        val log: JSFunction = object : JSFunction(JavaScript, "log") {
-            fun log(tag: String, content: String) {
-                logDebug(tag, content)
-            }
-        }
-        JavaScript.property("log", log)
-        JavaScript.evaluateScript("""
-            function helloJS() {
-                return "Hello using liquidCore";
-            }
-            const param = helloJS();
-            log("Shibasis", param);
-        """.trimIndent())
     }
 }
 

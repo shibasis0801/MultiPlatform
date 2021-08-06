@@ -58,7 +58,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-//    api(project(":core-debug"))
     api(project(":pravega"))
 
     implementation JavaScript
@@ -67,5 +66,3 @@ dependencies {
     kapt daggerKapt
 }
 
-apply from: new File(rootProject.projectDir, 'node_modules/liquidcore/include.V8.gradle')
-//apply from: new File(rootProject.projectDir, '.liquidcore/liquidcore.build.gradle')

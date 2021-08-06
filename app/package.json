@@ -5,12 +5,11 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "server": "liquidcore server",
-    "bundler": "liquidcore bundle",
-    "init": "liquidcore init",
-    "gradle-config": "liquidcore gradle",
-    "pod-config": "liquidcore pod",
-    "postinstall": "liquidcore postinstall"
+    "start": "webpack serve --progress --profile --config website/config/webpack.dev.js",
+    "forwardPorts": "adb -d reverse tcp:8081 tcp:8081",
+    "build": "webpack --mode production --config website/config/webpack.prod.js",
+    "deployDev": "npm run build && cd website && firebase deploy",
+    "deployProd": "npm run build && cd website && firebase deploy -P production"
   },
   "keywords": [],
   "author": "",
@@ -18,15 +17,11 @@
   "dependencies": {
     "@material-ui/core": "4.11.2",
     "@material-ui/icons": "4.11.2",
-    "liquidcore": "^0.7.10",
     "lodash": "4.17.20",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-native": "0.63.4",
-    "react-native-web": "0.14.10",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
-    "react-webcam": "^5.2.3",
     "roboto-fontface": "0.10.0"
   },
   "devDependencies": {
@@ -36,59 +31,23 @@
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
     "@babel/runtime": "^7.12.5",
-    "@react-native-community/cli-platform-android": "4.13.0",
-    "@react-native-community/eslint-config": "1.1.0",
     "@types/jest": "25.2.3",
     "@types/lodash": "^4.14.168",
     "@types/react": "16.14.0",
-    "@types/react-native": "0.63.46",
     "@types/react-router": "5.1.11",
     "@types/react-router-dom": "5.1.7",
     "babel-jest": "25.1.0",
     "babel-loader": "8.2.2",
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-module-resolver": "4.1.0",
-    "babel-plugin-react-native-web": "0.14.10",
     "css-loader": "5.0.1",
-    "eslint": "6.5.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.1",
-    "jest": "25.1.0",
     "lodash-webpack-plugin": "^0.11.6",
-    "metro-react-native-babel-preset": "0.59.0",
-    "react-test-renderer": "16.13.1",
     "style-loader": "2.0.0",
     "typescript": "4.1.3",
     "webpack": "^5.15.0",
     "webpack-cli": "^4.3.1",
     "webpack-dev-server": "^3.11.2"
-  },
-  "jest": {
-    "preset": "react-native",
-    "testPathIgnorePatterns": [
-      "web"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
-  },
-  "MD5": "FF:D5:2A:A4:13:56:7D:6F:49:CC:19:39:9C:3F:0D:3A",
-  "SHA1": "7E:F6:1B:E9:40:D2:94:36:B4:AF:7A:73:A0:46:27:A4:78:65:98:89",
-  "SHA-256": "8E:E5:DA:AF:55:23:2A:7B:43:1D:E3:CB:EC:E4:8D:EA:7F:91:BF:31:AB:0F:5A:B3:E0:7F:0C:60:07:CF:B4:87",
-  "liquidcore": {
-    "entry": [
-      "example.js"
-    ],
-    "gradle_options": {
-      "module": "app"
-    },
-    "bundler_output": {
-      "android": "app/src/main/res/raw"
-    }
   }
 }
