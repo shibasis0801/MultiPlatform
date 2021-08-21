@@ -3,7 +3,7 @@ import kotlin.js.Promise
 actual class Completable<T> {
     val promise: Promise<T>
 
-    actual constructor(executor: CompletableExecutor<T>) {
+    actual constructor(executor: ResolveReject<T>) {
         promise = Promise(executor)
     }
 
@@ -22,6 +22,7 @@ actual class Completable<T> {
 
     }
 }
+fun<T> Promise<T>.toCompletable() = Completable(this)
 
 fun t() {
 

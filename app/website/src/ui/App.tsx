@@ -1,7 +1,7 @@
 import React from 'react';
 import Routes from './common/Routes';
 import {BrowserRouter} from "react-router-dom";
-import Container from "./common/Container";
+import Container from "./common/Container/Container";
 
 const App = () => (
   <>

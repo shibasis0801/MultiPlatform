@@ -1,0 +1,37 @@
+#container {
+    font-family: "Roboto", sans-serif;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--on-base);
+    background-color: var(--base);
+}
+
+#container > header {
+    height: 96px;
+    width: 100%;
+}
+
+#container > main {
+    flex: auto;
+    width: 100%;
+}
+@media screen and (min-width: 1000px) {
+    #container > main {
+        width: 80%;
+    }
+}
+
+#container > footer {
+    background-color: var(--primary-light);
+    height: 40px;
+    width: 100%;
+
+    /* For children */
+    display: flex;
+    justify-content: center;
+}
