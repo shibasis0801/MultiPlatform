@@ -1,1 +1,1 @@
-rootProject.name = "listenSQL"
+rootProject.name = "listen-sql"

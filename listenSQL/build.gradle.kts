@@ -1,47 +1,66 @@
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktor_version: String by project
-val kotlin_version: String by project
-val logback_version: String by project
-val coroutines_version = "1.4.2"
 plugins {
-    application
-    kotlin("jvm") version "1.4.10"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.10"
+  kotlin ("jvm") version "1.5.10"
+  application
+  id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-group = "com.overlord"
-version = "0.0.1"
-
-application {
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=true")
-    mainClass.set("io.ktor.server.netty.EngineMain")
-}
-
+group = "dev.shibasispatnaik"
+version = "1.0.0-SNAPSHOT"
 
 repositories {
-    mavenLocal()
-    jcenter()
-    maven { url = uri("https://kotlin.bintray.com/ktor") }
+  mavenCentral()
+}
+
+val vertxVersion = "4.1.2"
+val junitJupiterVersion = "5.7.0"
+
+val mainVerticleName = "dev.shibasispatnaik.listen_sql.MainVerticle"
+val launcherClassName = "io.vertx.core.Launcher"
+
+val watchForChange = "src/**/*"
+val doOnChange = "${projectDir}/gradlew classes"
+
+application {
+  mainClass.set("chapter1.firstapp.MainKt")
+//  mainClass.set(launcherClassName)
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-auth:$ktor_version")
-    implementation("io.ktor:ktor-auth-jwt:$ktor_version")
-    implementation("io.ktor:ktor-locations:$ktor_version")
-    implementation("io.ktor:ktor-network-tls:$ktor_version")
-    implementation("io.ktor:ktor-websockets:$ktor_version")
-    implementation("io.ktor:ktor-serialization:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version")
+  implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
+  implementation("io.vertx:vertx-auth-jwt")
+  implementation("io.vertx:vertx-web")
+  implementation("io.vertx:vertx-pg-client")
+  implementation("io.vertx:vertx-lang-kotlin-coroutines")
+  implementation("io.vertx:vertx-shell")
+  implementation("io.vertx:vertx-stomp")
+  implementation("io.vertx:vertx-lang-kotlin")
+  implementation(kotlin("stdlib-jdk8"))
+  testImplementation("io.vertx:vertx-junit5")
+  testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
+}
 
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions.jvmTarget = "11"
 
-    implementation("com.github.jasync-sql:jasync-postgresql:1.1.6")
+tasks.withType<ShadowJar> {
+  archiveClassifier.set("fat")
+  manifest {
+    attributes(mapOf("Main-Verticle" to mainVerticleName))
+  }
+  mergeServiceFiles()
+}
 
-    testImplementation("io.ktor:ktor-server-tests:$ktor_version")
+tasks.withType<Test> {
+  useJUnitPlatform()
+  testLogging {
+    events = setOf(PASSED, SKIPPED, FAILED)
+  }
+}
+
+tasks.withType<JavaExec> {
+  args = listOf("run", mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$launcherClassName", "--on-redeploy=$doOnChange")
 }
