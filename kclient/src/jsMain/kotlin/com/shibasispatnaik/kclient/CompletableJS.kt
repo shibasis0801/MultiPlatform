@@ -1,7 +1,5 @@
 package com.shibasispatnaik.kclient
-
 import kotlin.js.Promise
-
 actual class Completable<T> {
     val promise: Promise<T>
 
@@ -36,4 +34,5 @@ fun t() {
             reject(Throwable("No"))
         }
     }
+
 }
